@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-const targetDir = "BPMSupreme"
+const targetDir = "music"
 
 func main() {
 	if info, err := os.Stat(targetDir); err != nil {
@@ -20,13 +20,13 @@ func main() {
 	files, _ := ioutil.ReadDir(targetDir)
 	for _, f := range files {
 		artistName := strings.Split(f.Name(), " - ")[0]
-
-		if _, err := os.Stat(artistName); os.IsNotExist(err) {
-			os.Mkdir(artistName, os.ModePerm)
+		artistDirName := "artists/" + artistName
+		if _, err := os.Stat(artistDirName); os.IsNotExist(err) {
+			os.Mkdir(artistDirName, os.ModePerm)
 		}
 
 		oldPath := targetDir + "/" + f.Name()
-		newPath := artistName + "/" + f.Name()
+		newPath := artistDirName + "/" + f.Name()
 		if err := os.Rename(oldPath, newPath); err != nil {
 			log.Printf("%v", err)
 		}
